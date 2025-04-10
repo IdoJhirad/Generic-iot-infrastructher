@@ -1,0 +1,103 @@
+    * {
+        box-sizing: border-box;
+    }
+    html, body  {
+        height: 100%;
+        margin:0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+    }
+    body {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between; /* Pushes footer to bottom */
+    }
+
+    .wrapper {
+          flex-grow: 1; /* Takes up remaining space */
+    }
+
+    .intro h1 {
+        text-align: center;
+        margin: 3px;
+        font-size: 3rem;
+        color: #333;
+    }
+
+    .nav-intro {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        background-color: #007bff; /* Blue background */
+        border-radius: 0px; /* Optional: Adds rounded corners */
+        padding: 1rem;
+        gap: 1rem;
+    }
+
+    .nav-intro a {
+        color: white; /* White text on blue background */
+        font-size: 1rem;
+         text-decoration: none;
+    }
+    .nav-intro a:hover {
+         text-decoration: underline;
+         color: #ffcc00; /* Optional: Yellow hover color */
+    }
+
+footer {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    background-color: #333; /* Dark background */
+    color: white; /* White text */
+    padding: 2rem;
+    text-align: left;
+    gap: 1rem; /* Space between sections */
+    margin-top: 3rem;
+    width: 100%;
+    position: relative; /* Makes the footer part of the flow of content */
+}
+
+.footer-left .thanks {
+    font-size: 2.5rem; /* Larger text size */
+    font-weight: bold;
+    line-height: 1.2;
+    margin: 0;
+    margin-right: 3rem
+}
+
+.divider {
+    width: 2px; /* Thin vertical line */
+    height: 5rem; /* Short line for a divider effect */
+    background-color: #fff; /* White color for the line */
+    margin: 0 5rem; /* Space around the divider */
+}
+
+.footer-right {
+    text-align: center;
+    margin-left : 10rem;
+}
+
+.footer-right h3 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.footer-right p {
+    font-size: 1rem;
+    margin: 0.5rem 0;
+}
+
+footer a {
+    color: #ffcc00; /* Yellow link color */
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+footer a:hover {
+    color: #007bff; /* Blue hover color */
+    text-decoration: underline;
+}

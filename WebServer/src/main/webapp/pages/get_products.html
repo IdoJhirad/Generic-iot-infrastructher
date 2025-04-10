@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/general.css">
+    <link rel="stylesheet" href="../css/FormDes.css">
+    <link rel="stylesheet" href="../css/container.css">
+    <title>Get Products</title>
+</head>
+<body>
+<header class ="intro">
+    <h1>welcome</h1>
+    <nav class="nav-intro">
+        <a href="/">Home</a>
+        <a href="/register_company">register company</a>
+        <a href="/register_product">register product</a>
+        <a href="/pages/companies.html">get companies</a>
+        <a href="/pages/getcompany.html">get company</a>
+        <a href="/pages/get_products.html">get products</a>
+        <a href="/pages/get_product.html">get product</a>
+        <a href="/pages/exercise2.html">avshlom</a>
+        <a href="/pages/login.html">avshlomable</a>
+
+    </nav>
+</header>
+<div class="wrapper">
+
+    <div id="get_products_form" class="reg-form">
+        <form name="get_products_form">
+            <label for="Company_ID">Enter Company ID:</label>
+            <input type="text" id="Company_ID" name="Company_ID" required><br><br>
+            <input type="submit" value="Submit" id="startFetch" required>
+        </form>
+    </div>
+    <div id="companyNameDisplay"  class="ContainerHeader hidden" >
+        <h1 id="test"></h1>
+    </div>
+    <div class="Container hidden" id="productsContainer"></div>
+    <button class="Container-button" type="button" id="goBackButton" style="display:none;" onclick="window.location.href='/pages/get_products.html';">Go Back</button>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+
+    const submitButton = document.getElementById('startFetch');
+    const companyIDInput = document.getElementById('Company_ID');
+    const companyNameDisplay = document.getElementById('test');
+    const dataContainer = document.getElementById('productsContainer');
+    let validCompanyID = null;
+
+     document.getElementById('get_products_form').addEventListener('submit', function(event) {
+        event.preventDefault();
+        fetchCompanyName();
+      });
+
+     companyIDInput.addEventListener('keydown', function(event) {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            submitButton.click();  // Trigger the click event of the submit button
+        }
+    });
+    function fetchCompanyName() {
+        const inputCompanyID = companyIDInput.value.trim();
+
+        if (inputCompanyID === '') {
+            alert('Please enter a valid Company ID.');
+            return;
+        }
+
+    /*<!--     get company name from the server       -->*/
+    fetch(`/get_company_name?Company_ID=${inputCompanyID}`)
+        .then(response => response.text())
+        .then(data=> {
+            console.log("Server Response:", data);
+             if (data === 'Fail') {
+                alert('Company not found. Please enter a valid Company ID.');
+            } else {
+            console.log("Server Response: name fetch succeed");
+            companyNameDisplay.textContent = `Products of Company: ${data}`;
+            validCompanyID = inputCompanyID;
+
+            /*<!-- fetch for product with Id -->*/
+             fetchProducts(validCompanyID);
+         }
+    }).catch(error => {
+            console.error('Error fetching company name:', error);
+            alert('An error occurred while fetching the company name.');
+        });
+    }
+
+     function fetchProducts(validCompanyID) {
+        console.log(validCompanyID);
+        dataContainer.innerText = `Loading Products for ${companyNameDisplay}..`
+      fetch(`/get_products?Company_ID=${validCompanyID}`)
+        .then(response => response.json())
+                .then(data => {
+                    if (data.Status === 'Success') {
+                       console.log("in fetch product");
+                        displayData(data.Data);  // Display fetched products
+                    } else {
+                        dataContainer.innerText = 'No products found for this Company ID.';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching data:', error);
+                    dataContainer.innerText = 'Failed to load products';
+                });
+        }
+
+        function displayData(products) {
+        console.log("try to display data");
+         dataContainer.innerHTML = '';
+          document.getElementById('companyNameDisplay').classList.remove('hidden');
+        document.getElementById('productsContainer').classList.remove('hidden');
+          if (products.length === 0) {
+                    dataContainer.innerText = 'No products found.';
+                    return;
+            }
+         const table = document.createElement('table');
+         const headers = ["Product ID", "Company_ID", "Product Name", "Description"];
+         const headerRow = table.insertRow();
+            headers.forEach(header => {
+                const th = document.createElement('th');
+                th.textContent = header;
+                headerRow.appendChild(th);
+            });
+         products.forEach(product => {
+                const row = table.insertRow();
+                row.insertCell().textContent = product.Product_ID;
+                row.insertCell().textContent = product.Company_ID;
+                row.insertCell().textContent = product.Product_Name;
+                row.insertCell().textContent = product.Description;
+            });
+            dataContainer.appendChild(table);
+          goBackButton.style.display = 'block';
+        }
+        });
+
+
+</script>
+<footer>
+    <div class="footer-left">
+        <p class="thanks"> Thanks<br>for visiting</p>
+    </div>
+    <div class="divider"></div>
+    <div class="footer-right">
+        <h3>About Me</h3>
+        <p>Author: Ido Jhirad <br>
+            <a href="mailto:idojhirad@gmail.com">idojhirad@gmail.com</a></p>
+    </div>
+</footer>
+</body>
+</html>

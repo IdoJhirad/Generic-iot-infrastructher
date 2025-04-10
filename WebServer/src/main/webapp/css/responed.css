@@ -1,0 +1,61 @@
+#overlay {
+    display: none; /* Initially hidden */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
+    z-index: 999; /* Behind the popup but in front of the page content */
+}
+
+#responseDisplay {
+    display: none; /* Initially hidden */
+    background-color: #e1f7e1; /* Light green for success */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+    width: 80%;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    border: 2px solid #ccc;
+}
+
+#responseDisplay h2 {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+#companyIdMessage {
+    font-size: 1.2rem;
+    margin-top: 10px;
+    color: #333;
+}
+
+#responseDisplay button {
+    width: 25rem; /* Match the width of form buttons */
+    padding: 0.7rem;
+    background-color: #4CAF30;
+    color: white;
+    border: none;
+    border-radius: 20px; /* Match form button's rounded corners */
+    cursor: pointer;
+    font-size: 1rem;
+    display: block;
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#responseDisplay button:hover {
+    background-color: #45a049;
+}

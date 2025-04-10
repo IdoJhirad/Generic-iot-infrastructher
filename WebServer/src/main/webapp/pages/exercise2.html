@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title> hello massage</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                text-align: center;
+                margin: 20px;
+            }
+            #messages {
+                margin-top: 20px;
+            }
+        </style>
+    </head>
+<body>
+    <h1>Welcome page</h1>
+    <label for="inputname">Enter your name</label><br>
+    <input type="text" id="inputname" placeholder="your name">
+    <button id="button">Presss!!!</button>
+    <div id="message"></div>
+
+    <h2>button</h2>
+
+    <button id="outer" onclick="outer()"> Outer
+        <button
+                id="inner" onclick="innerClick()">Inner
+        </button>
+    </button>
+
+    <script>
+        function outer() {
+            console.log('Outer button clicked');
+        }
+        function innerClick() {
+            console.log('Inner button clicked');
+        }
+
+        document.getElementById('button').addEventListener('click', function() {
+            const name = document.getElementById('inputname').value.trim();
+            const DivSection = document.getElementById('message');
+            if(name) {
+            const message = document.createElement('p');
+            message.textContent=`welcome ${name}!`;
+            sessionStorage.setItem("name",name);
+            localStorage.setItem("name", name);
+            DivSection.appendChild(message);
+            document.getElementById('inputname').value = '';
+             } else {
+                alert('Please enter a name.');
+            }
+        });
+    </script>
+</body>
+</html>

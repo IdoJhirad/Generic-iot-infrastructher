@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="english">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/general.css">
+    <link rel="stylesheet" href="../css/FormDes.css">
+    <link rel="stylesheet" href="../css/container.css">
+    <title>Get Product</title>
+</head>
+<body>
+<header class ="intro">
+    <h1>welcome</h1>
+    <nav class="nav-intro">
+        <a href="/">Home</a>
+        <a href="/register_company">register company</a>
+        <a href="/register_product">register product</a>
+        <a href="/pages/companies.html">get companies</a>
+        <a href="/pages/getcompany.html">get company</a>
+        <a href="/pages/get_products.html">get products</a>
+        <a href="/pages/get_product.html">get product</a>
+        <a href="/pages/exercise2.html">avshlom</a>
+        <a href="/pages/login.html">avshlomable</a>
+
+    </nav>
+</header>
+<!--the data -->
+    <div class="wrapper">
+        <div id="companyFormContainer" class="reg-form">
+            <form id="companyForm">
+                <label for="companyIdInput">Enter Company ID:</label>
+                <input type="text" id="companyIdInput" name="companyId" required><br>
+                <label for="ProductIdInput">Enter Product ID:</label>
+                <input type="text" id="ProductIdInput" name="productID" required><br>
+                <input type="submit" value="Submit" id="submitCompanyForm">
+            </form>
+        </div>
+        <div id="companyNameDisplay" class="ContainerHeader hidden">
+            <h1 id="companyNameHeader"></h1>
+        </div>
+        <div class="Container hidden" id="companyDetailsContainer"></div>
+
+        <button class="Container-button" type="button" id="backButton" style="display:none;" onclick="window.location.href='/pages/get_product.html';">Go Back</button>
+    </div>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+
+    const companyIDInput = document.getElementById('companyIdInput');
+            const productIDInput = document.getElementById('ProductIdInput');
+            const companyNameDisplay = document.getElementById('companyNameHeader');
+            const dataContainer = document.getElementById('companyDetailsContainer');
+            const backButton = document.getElementById('backButton');
+
+            document.getElementById('companyForm').addEventListener('submit', function (event) {
+                event.preventDefault();
+                fetchCompanyName();
+            });
+
+            companyIDInput.addEventListener('keydown', function (event) {
+                if (event.key === 'Enter') {
+                    event.preventDefault();
+                    submitButton.click(); // Trigger the click event of the submit button
+                }
+            });
+
+    function fetchCompanyName() {
+        const inputCompanyID = companyIDInput.value.trim();
+
+        if (inputCompanyID === '') {
+            alert('Please enter a valid Company ID.');
+            return;
+        }
+
+    /*<!--     get company name from the server       -->*/
+    fetch(`/get_company_name?Company_ID=${inputCompanyID}`)
+        .then(response => response.text())
+        .then(data=> {
+            console.log("Server Response:", data);
+             if (data === 'Fail') {
+                alert('Company not found. Please enter a valid Company ID.');
+            } else {
+            console.log("Server Response: name fetch succeed");
+            companyNameDisplay.textContent = `Product of Company: ${data}`;
+            validCompanyID = inputCompanyID;
+
+            /*<!-- fetch for product with Id -->*/
+             fetchProducts(validCompanyID);
+         }
+    }).catch(error => {
+            console.error('Error fetching company name:', error);
+            alert('An error occurred while fetching the company name.');
+        });
+    }
+
+     function fetchProducts(validCompanyID) {
+     const productID = productIDInput.value.trim();
+    console.log(validCompanyID, productID );
+        dataContainer.innerText = `Loading Product ${productID} for ${companyNameDisplay}..`
+      fetch(`/get_product?Company_ID=${validCompanyID}&Product_ID=${productID}`)
+        .then(response => response.json())
+                .then(data => {
+                    if (data.Status === 'Success') {
+                       console.log("in fetch product "+data);
+                        displayData(data);  // Display fetched product
+                    } else {
+                        dataContainer.innerText = 'No product found for this Company ID.';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching data:', error);
+                    dataContainer.innerText = 'Failed to load product';
+                });
+        }
+
+        function displayData(product) {
+        console.log("try to display data "+product);
+         dataContainer.innerHTML = '';
+         document.getElementById('companyNameDisplay').classList.remove('hidden');
+        document.getElementById('companyDetailsContainer').classList.remove('hidden');
+         if (Object.keys(product).length === 0) {
+                companyDetailsContainer.textContent = 'No details found.';
+                return;
+        }
+         const table = document.createElement('table');
+         const headers = ["Product ID", "Company_ID", "Product Name", "Description"];
+         const headerRow = table.insertRow();
+            headers.forEach(header => {
+                const th = document.createElement('th');
+                th.textContent = header;
+                headerRow.appendChild(th);
+            });
+
+                const row = table.insertRow();
+                row.insertCell().textContent = product.Product_ID;
+                row.insertCell().textContent = product.Company_ID;
+                row.insertCell().textContent = product.Product_Name;
+                row.insertCell().textContent = product.Description;
+
+            dataContainer.appendChild(table);
+            backButton.style.display = 'block';
+
+        }
+        });
+
+
+</script>
+<footer>
+    <div class="footer-left">
+        <p class="thanks"> Thanks<br>for visiting</p>
+    </div>
+    <div class="divider"></div>
+    <div class="footer-right">
+        <h3>About Me</h3>
+        <p>Author: Ido Jhirad <br>
+            <a href="mailto:idojhirad@gmail.com">idojhirad@gmail.com</a></p>
+    </div>
+</footer>
+
+
+</body>
+</html>
