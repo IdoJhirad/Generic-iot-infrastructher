@@ -41,7 +41,7 @@ public class GetProducts extends HttpServlet {
 
         //TODO
         if ("Success".equals(status)) {
-            System.out.println("entered sucsess");
+            System.out.println("entered success");
             resp.setStatus(HttpServletResponse.SC_OK);
             resp.getWriter().write(respond.toString());
         } else {
