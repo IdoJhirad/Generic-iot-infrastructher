@@ -119,7 +119,7 @@ mvn -f WebServer/pom.xml clean package
 
 ## Installation and Running
 
-1. Install **Java 17** and **Maven 3.8+** on your system.
+1. Install **Java 8 (JDK 1.8)** and **Maven 3.6+** on your system.
 2. Clone this repository and build the project:
 
    ```bash
