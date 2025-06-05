@@ -41,7 +41,7 @@ public class GetCompany extends HttpServlet {
 
         //TODO
         if ("Success".equals(status)) {
-            System.out.println("entered sucsess get company");
+            System.out.println("entered success get company");
             resp.setStatus(HttpServletResponse.SC_OK);
             resp.getWriter().write(respond.toString());
         } else {

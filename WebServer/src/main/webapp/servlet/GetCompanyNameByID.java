@@ -42,7 +42,7 @@ public class GetCompanyNameByID extends HttpServlet {
         String status = respond.get("Status").getAsString();
         String companyName = null;
         if(respond.has("Company_Name")&&"Success".equals(status)) {
-            System.out.println("\tenter name by id sucsess");
+            System.out.println("\tenter name by id success");
              companyName = respond.get("Company_Name").getAsString();
             resp.getWriter().write(companyName);
         }
